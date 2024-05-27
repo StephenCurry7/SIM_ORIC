@@ -11,6 +11,7 @@ import numpy as np
 import logging
 
 class Combined_DualMLP_Model(BaseModel):
+        """Combine two DualMLP models into SIM model"""
         def __init__(self, 
                      base_model, 
                      inter_model, 
@@ -18,6 +19,7 @@ class Combined_DualMLP_Model(BaseModel):
                      learning_rate=1e-3,
                      evaluate=True,
                      **kwargs):
+            """Init the class"""
             super(Combined_DualMLP_Model, self).__init__(feature_map,**kwargs)
             
 
@@ -38,6 +40,7 @@ class Combined_DualMLP_Model(BaseModel):
 
         def combine_fit(self, data_generator, epochs=1, validation_data=None, unfreeze_base_model=False, model_path=None, weight_path=None,
             max_gradient_norm=10., **kwargs): 
+            """fit the combine model"""
             self.unfreeze_base_model = unfreeze_base_model
             self.valid_data = validation_data
             self.batch_size = kwargs['batch_size']
@@ -211,6 +214,7 @@ class Combined_DualMLP_Model(BaseModel):
                     return val_logs
     
         def forward(self, inputs): 
+            """the forward function of combined DualMLP according to the forward function of DualMLP model in fuxictr"""
             base_input, inter_input = inputs[0], inputs[1]
 
             base_X = self.base_part.get_inputs(base_input)
@@ -228,6 +232,7 @@ class Combined_DualMLP_Model(BaseModel):
 
 
 class Combined_FinalMLP_Model(BaseModel):
+        """Combine two FinalMLP models into SIM model"""
         def __init__(self, 
                      base_model, 
                      inter_model, 
@@ -235,6 +240,7 @@ class Combined_FinalMLP_Model(BaseModel):
                      learning_rate=1e-3,
                      evaluate=True,
                      **kwargs):
+            """Init the class"""
             super(Combined_FinalMLP_Model, self).__init__(feature_map,**kwargs)
             
 
@@ -255,6 +261,7 @@ class Combined_FinalMLP_Model(BaseModel):
 
         def combine_fit(self, data_generator, epochs=1, validation_data=None, unfreeze_base_model=False, model_path=None, weight_path=None,
             max_gradient_norm=10., **kwargs): 
+            """fit the combine model"""
             self.unfreeze_base_model = unfreeze_base_model
             self.valid_data = validation_data
             self.batch_size = kwargs['batch_size']
@@ -428,6 +435,7 @@ class Combined_FinalMLP_Model(BaseModel):
                     return val_logs
     
         def forward(self, inputs):
+                """the forward function of combined DualMLP according to the forward function of DualMLP model in fuxictr"""
             base_input, inter_input = inputs[0], inputs[1]
 
             base_X = self.base_part.get_inputs(base_input)
