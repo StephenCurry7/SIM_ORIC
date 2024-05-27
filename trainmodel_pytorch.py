@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
-
 import os
 import gc
 from sklearn.metrics import log_loss, mean_squared_error
@@ -15,11 +9,11 @@ from tensorflow.python.keras import Model
 from tensorflow.keras import layers
 from deepctr.models import xDeepFM, DeepFM, WDL, DCN, AutoInt'''
 import torch
-from torch import nn #from tensorflow import keras
-from torch.nn import Module #from tensorflow.python.keras import Model
-from deepctr_torch.models import xDeepFM, DeepFM, WDL, DCN, AutoInt #from deepctr.models import xDeepFM, DeepFM, WDL, DCN, AutoInt
+from torch import nn 
+from torch.nn import Module 
+from deepctr_torch.models import xDeepFM, DeepFM, WDL, DCN, AutoInt 
 from deepctr_torch.models.basemodel import BaseModel
-import copy #from tensorflow.python.keras.models import clone_model
+import copy 
 from deepctr_torch.inputs import combined_dnn_input
 import numpy as np
 
@@ -69,40 +63,6 @@ def build_model(model_type, linear_feature_columns, dnn_feature_columns, task="b
     return model
 
 
-
-
-
-
-
-# def combine_model(model_type,  #use_previous_model=False时候的combine_model函数
-#         base_linear_feat,
-#         base_dnn_feat,
-#         inter_linear_feat,
-#         inter_dnn_feat):
-#     base_part = build_model(model_type, base_linear_feat, base_dnn_feat)
-#     base_part._name = "base_part"
-#     for layer in base_part.layers:
-#         layer._name = "base_" + layer.name
-#     base_input = base_part.input
-#     base_output = base_part.get_layer(base_part.layers[-2].name).output
-#
-#     inter_part = build_model(model_type, inter_linear_feat, inter_dnn_feat)
-#     inter_part._name = "inter_part"
-#     for layer in inter_part.layers:
-#         layer._name = "inter_" + layer.name
-#     inter_input = inter_part.input
-#     inter_output = inter_part.get_layer(inter_part.layers[-2].name).output
-#
-#     x = layers.add([base_output, inter_output])
-#     x = tf.sigmoid(x)
-#     final_output = tf.reshape(x, (-1, 1))
-#     model = Model(
-#         inputs=[base_input, inter_input],
-#         outputs=final_output,
-#     )
-#     return model
-
-
 def train_model(model,
                 train_data,
                 valid_data,
@@ -114,22 +74,22 @@ def train_model(model,
     best_valid_loss = float("inf")
     patience_counter = 0
 
-    for epoch in range(epochs): #epochs=30
+    for epoch in range(epochs): 
         breakout = False
-        for file_id, (input_batch, y_batch) in enumerate(train_data):  #file_id=0,1,2,3
+        for file_id, (input_batch, y_batch) in enumerate(train_data):  
             print("epoch", epoch, "file", file_id)
 
-            if len(input_batch) == 2:#此时input_batch为一个长为2的字典{'base_input':[,...,],'inter_input':[,...,]}
-                base_input_batch = input_batch['base_input'] #一个与feature_nums长度相同的列表，列表各元素对应一个base特征构成的dataframe，尺寸为batch_size
-                inter_input_batch = input_batch['inter_input'] #一个与inter_feature_nums长度相同的列表，列表各元素对应一个inter特征构成的dataframe，尺寸为batch_size
-                input_batch = np.concatenate((base_input_batch,inter_input_batch)) #尺寸为(feature_nums+inter_feature_nums,batch_size)
-                input_batch=list(input_batch)#长度为feature_nums+inter_feature_nums的列表，列表各元素对应一个base特征构成的numpy，尺寸为(batch_size)
+            if len(input_batch) == 2:
+                base_input_batch = input_batch['base_input']
+                inter_input_batch = input_batch['inter_input']
+                input_batch = np.concatenate((base_input_batch,inter_input_batch)) 
+                input_batch=list(input_batch)
                 model.cuda()
             
             model.fit(input_batch,
                       y_batch,
                       shuffle=True,
-                      batch_size=batch_size, #batch_size=8192
+                      batch_size=batch_size,
                       epochs=1,
                       verbose=2,
                       )
@@ -137,9 +97,9 @@ def train_model(model,
             valid_loss = 0
             for input_valid, y_valid in valid_data:
                 if len(input_valid) == 2:
-                    base_input_valid = input_valid['base_input'] #一个与feature_nums长度相同的列表，列表各元素对应一个base特征构成的dataframe，尺寸为batch_size
-                    inter_input_valid = input_valid['inter_input'] #一个与inter_feature_nums长度相同的列表，列表各元素对应一个inter特征构成的dataframe，尺寸为batch_size
-                    input_valid = np.concatenate((base_input_valid,inter_input_valid)) #尺寸为(feature_nums+inter_feature_nums,batch_size)
+                    base_input_valid = input_valid['base_input'] 
+                    inter_input_valid = input_valid['inter_input'] 
+                    input_valid = np.concatenate((base_input_valid,inter_input_valid))
                     input_valid=list(input_valid)
                 
                 pred_valid = model.predict(input_valid, batch_size=batch_size)
@@ -148,10 +108,9 @@ def train_model(model,
                 else:
                     valid_loss += mean_squared_error(y_valid, pred_valid)
             valid_loss /= len(valid_data)
-            print('valid_logloss:', valid_loss) #print('valid_loss:', valid_loss)
+            print('valid_logloss:', valid_loss) 
 
             if valid_loss < best_valid_loss:
-                #model.save(model_checkpoint_file) 
                 torch.save(model,model_checkpoint_file) 
                 print(
                     "[%d-%d] model saved!. Valid loss improved from %.4f to %.4f"
@@ -165,7 +124,7 @@ def train_model(model,
                     print("Early Stopping!")
                     break
                 patience_counter += 1
-            gc.collect() #垃圾回收
+            gc.collect() 
 
         if breakout:
             break
