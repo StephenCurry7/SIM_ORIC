@@ -689,8 +689,8 @@ if __name__ == "__main__":
         parser.add_argument('--gpu', type=int, default=0, help='The gpu index, -1 for cpu')
 
         args = vars(parser.parse_args(args=[]))
-        args['config'] =  './config/FinalMLP_criteo_x1' 
-        args['expid'] =  'FinalMLP_criteo_x1_004_d5d36917'
+        args['config'] =  './config/FinalMLP_criteo_x1' #'./config/DualMLP_criteo_x1'
+        args['expid'] =  'FinalMLP_criteo_x1_004_d5d36917' #'DualMLP_criteo_x1_001_0aa31de8'
         
         experiment_id = args['expid']
         params = load_config(args['config'], experiment_id)
