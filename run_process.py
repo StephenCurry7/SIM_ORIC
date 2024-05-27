@@ -47,7 +47,7 @@ if __name__ == "__main__":
     ad['brand'] = ad['brand'].fillna(-1)
     for f in ["cate_id", "brand"]:
         lbe = LabelEncoder()
-        ad[f] = lbe.fit_transform(ad[f]) + 1 #one-hot encoding编码类别型特征
+        ad[f] = lbe.fit_transform(ad[f]) + 1 
 
     user = pd.read_csv('data/taobao/user_profile.csv')
     user = user.fillna(-1)
