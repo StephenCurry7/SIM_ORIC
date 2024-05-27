@@ -17,7 +17,7 @@ def load_feat_info(fp):
             feat_info['dense_feat'],
             feat_info['sparse_feat'],
             feat_info['sequence_feat'],
-            feat_info['nunique_feat']) #nunique -> 不同值的数量
+            feat_info['nunique_feat'])
 
 
 def load_basic_data(data_folder, file_id, file_name="base_data.pkl"):
@@ -27,7 +27,7 @@ def load_basic_data(data_folder, file_id, file_name="base_data.pkl"):
     part_folder = join(data_folder,
         "part{}".format(file_id))
     data = pd.read_pickle(join(part_folder, file_name))
-    return data[dense_feat+sparse_feat], data[target].values.ravel() #ravel()将df展平，类似于flatten
+    return data[dense_feat+sparse_feat], data[target].values.ravel() 
 
 
 def load_seqence_data(data_folder, file_id):
