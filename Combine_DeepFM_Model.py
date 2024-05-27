@@ -12,7 +12,9 @@ import numpy as np
 import copy
 
 class CombinedModel(BaseModel):
+        """Combined two DeepFM models into a SIM model"""
         def __init__(self, base_model, inter_model, task, feature_names_num,linear_feature_columns, dnn_feature_columns,device='cuda:0'):
+            """Init the class"""
             super(CombinedModel, self).__init__(linear_feature_columns, dnn_feature_columns,device='cuda:0')
 
             base_part = copy.deepcopy(base_model)
@@ -29,6 +31,8 @@ class CombinedModel(BaseModel):
             self.task = task
             
         def forward(self, input): 
+            """the forward fuction of the SIM model according to the forward 
+            function of the  DeepFM model in deepctr_torch """
             base_input = input[:,:self.feature_names_num] 
             inter_input = input[:,self.feature_names_num:] 
             
