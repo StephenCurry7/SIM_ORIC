@@ -253,6 +253,9 @@ def one_step(file_id, oric_info,  evaluate=True, create_interaction=True,
     base_input, y = load_basic_data(data_folder, file_id) 
     seq_input = load_seqence_data(data_folder, file_id)
 
+    feat_info_path = os.path.join(data_folder, "feat_info.pkl")
+    _, _, sparse_feat, _, _ = load_feat_info(feat_info_path)
+
     if create_interaction: 
         # load or initialize ORIC
         previous_oric_path = os.path.join(previous_part_folder,
@@ -269,7 +272,7 @@ def one_step(file_id, oric_info,  evaluate=True, create_interaction=True,
             
         # update ORIC 
         time_start = time.time()
-        oric.fit(base_input, y, miss_val)
+        oric.fit(base_input[sparse_feat], y, miss_val)
         oric_running_time = time.time() - time_start
         add_record([oric_info["n_conf"], oric_info["decay"], file_id],
                     oric_running_time,
