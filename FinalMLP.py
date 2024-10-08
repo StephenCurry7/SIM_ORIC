@@ -12,7 +12,6 @@ class FinalMLP(BaseModel):
                  linear_feature_columns, dnn_feature_columns, 
                  task='binary', device='cuda:0',use_fm=True,
                  l2_reg_linear=0.00001, l2_reg_embedding=0.00001, l2_reg_dnn=0, init_std=0.0001, seed=1024, gpus=None,
-                 #learning_rate=1e-3,
                  embedding_dim=10,
                  mlp1_hidden_units=[64, 64, 64],
                  mlp1_hidden_activations="ReLU",
@@ -88,15 +87,12 @@ class FinalMLP(BaseModel):
                                                     mlp2_hidden_units[-1], 
                                                     output_dim=1, 
                                                     num_heads=num_heads)
-        #self.compile(kwargs["optimizer"], kwargs["loss"], learning_rate) #compile函数外置使用
-        #self.reset_parameters()
-        #self.model_to_device()
             
     def forward(self, X):
         """
         Inputs: [X,y]
         """
-       embedding_output = combined_dnn_input(sparse_embedding_list, dense_value_list) #shape=torch.Size([8192, 273])
+       embedding_output = combined_dnn_input(sparse_embedding_list, dense_value_list) 
         
         if self.use_fs:
             if len(self.fs1_context)>0:
@@ -121,9 +117,8 @@ class FinalMLP(BaseModel):
             feat1, feat2 = embedding_output, embedding_output
             
         logit = self.fusion_module(self.mlp1(feat1), self.mlp2(feat2)) 
-        y_pred = self.out(logit)#y_pred = self.output_activation(y_pred)
-        #return_dict = {"y_pred": y_pred}
-        return y_pred#return_dict
+        y_pred = self.out(logit)
+        return y_pred
 
 
 class FeatureSelection(nn.Module):
