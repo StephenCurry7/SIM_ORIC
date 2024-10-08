@@ -712,7 +712,7 @@ if __name__ == "__main__":
         set_logger(params)
         #logging.info("Params: " + print_to_json(params))
 
-        params_model = params.copy() #params_model专门用于构建模型
+        params_model = params.copy() 
 
         useless_params = ['learning_rate','task','dataset_id','debug_mode','early_stop_patience','epochs','eval_steps','feature_specs','group_id','loss',
                          'metrics','model','model_id','model_root','monitor','monitor_mode','num_workers','optimizer','ordered_features','pickle_feature_encoder',
