@@ -10,7 +10,6 @@ class DualMLP(BaseModel):
                  linear_feature_columns, dnn_feature_columns, 
                  task='binary', device='cuda:0',use_fm=True,
                  l2_reg_linear=0.00001, l2_reg_embedding=0.00001, l2_reg_dnn=0, init_std=0.0001, seed=1024, gpus=None,
-                 #learning_rate=1e-3,
                  embedding_dim=10,
                  mlp1_hidden_units=[64, 64, 64],
                  mlp1_hidden_activations="ReLU",
