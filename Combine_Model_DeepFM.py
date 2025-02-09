@@ -71,7 +71,7 @@ class CombinedModel(BaseModel):
             x = torch.add(base_output, inter_output) 
             if self.task == "binary":
                 x = torch.sigmoid(x)
-            final_output = x.view(-1, 1) #模型的预测概率
+            final_output = x.view(-1, 1) 
 
             
             return final_output
