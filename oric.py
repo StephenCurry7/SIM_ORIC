@@ -309,7 +309,7 @@ class ORIC(object):
         """Generate feature names for the selected itemsets."""
         for (antecedents, _), _ in self.rules.items:
             feature_name = '__'.join(["{}-{}".format(f, val) for f, val in antecedents])
-            feature_name = feature_name.replace('.0','')#自己加的，因为DeepFM模型中不允许特征名出现'.'
+            feature_name = feature_name.replace('.0','')
             if feature_name not in self.new_features: 
                 self.new_features.append(feature_name)
 
