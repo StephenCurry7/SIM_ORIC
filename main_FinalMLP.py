@@ -32,7 +32,7 @@ from fuxictr.utils import load_config, set_logger, print_to_json, print_to_list
 from fuxictr.features import FeatureMap
 from fuxictr.pytorch.torch_utils import seed_everything
 from fuxictr.preprocess.feature_processor import FeatureProcessor
-from uxictr.preprocess.build_dataset import save_h5,transform_h5_build_interdata
+from ffuxictr.preprocess.build_dataset import save_h5,transform_h5_build_interdata
 from fuxictr.pytorch.dataloaders import H5DataLoader
 import src
 import gc
